@@ -1,4 +1,4 @@
-import setTrigger from "trigger";
+import { setTrigger } from "trigger";
 
 const setTriggerDaily = () => {
   setTrigger("pushDaily");
