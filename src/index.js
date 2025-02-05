@@ -25,5 +25,12 @@ global.pushWeekly = () => {
   }
 };
 
-global.setTriggerDaily = () => {};
+global.setTriggerDaily = () => {
+  try {
+    operations.setTriggerDaily();
+  } catch (err) {
+    throw err;
+  }
+};
+
 global.setTriggerWeekly = () => {};
