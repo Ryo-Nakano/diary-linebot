@@ -1,36 +1,40 @@
-import operations from 'operations';
+import { DoPostOperation } from 'operations/do_post_operation';
+import { PushDailyOperation } from 'operations/push_daily_operation';
+import { PushWeeklyOperation } from 'operations/push_weekly_operation';
+import { SetTriggerOperation } from 'operations/set_trigger_operation';
 
-// ユーザーからのメッセージ受信時に発火
+/**
+ * ユーザーからのメッセージ受信時に発火
+ * @param {Object} e - イベントオブジェクト
+ */
 global.doPost = (e) => {
-  try {
-    operations.doPost(e);
-  } catch (err) {
-    throw err;
-  }
+  new DoPostOperation(e).run();
 };
 
+/**
+ * 毎日のプッシュ通知を実行
+ */
 global.pushDaily = () => {
-  try {
-    operations.pushDaily();
-  } catch (err) {
-    throw err;
-  }
+  new PushDailyOperation().run();
 };
 
+/**
+ * 週間のプッシュ通知を実行
+ */
 global.pushWeekly = () => {
-  try {
-    operations.pushWeekly();
-  } catch (err) {
-    throw err;
-  }
+  new PushWeeklyOperation().run();
 };
 
+/**
+ * 毎日のプッシュ通知用トリガーを設定
+ */
 global.setTriggerDaily = () => {
-  try {
-    operations.setTriggerDaily();
-  } catch (err) {
-    throw err;
-  }
+  new SetTriggerOperation('pushDaily').run();
 };
 
-global.setTriggerWeekly = () => {};
+/**
+ * 週間のプッシュ通知用トリガーを設定
+ */
+global.setTriggerWeekly = () => {
+  new SetTriggerOperation('pushWeekly').run();
+};
