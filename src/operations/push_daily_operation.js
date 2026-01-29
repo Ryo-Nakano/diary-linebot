@@ -1,5 +1,5 @@
 import { BaseOperation } from 'base_classes/base_operation';
-import { Diary } from 'sheet_data/bound_sheet/diary_data';
+import { Diary } from 'sheet_data/bound_sheet/diary';
 import { LineApiClient, LINE_API } from 'apis/line_api_client';
 import { MessageUtils } from 'utils/message_utils';
 import { TriggerUtils } from 'utils/trigger_utils';
