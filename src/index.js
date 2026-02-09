@@ -2,6 +2,15 @@ import { DoPostOperation } from 'operations/do_post_operation';
 import { PushDailyOperation } from 'operations/push_daily_operation';
 import { PushWeeklyOperation } from 'operations/push_weekly_operation';
 import { SetTriggerOperation } from 'operations/set_trigger_operation';
+import { ArchiveDiaryOperation } from 'operations/archive_diary_operation';
+
+/**
+ * 日記データをGoogle Driveにアーカイブする
+ * GASトリガーから毎週日曜23:59頃に呼び出される
+ */
+global.archiveDiary = () => {
+  new ArchiveDiaryOperation().run();
+};
 
 /**
  * ユーザーからのメッセージ受信時に発火
