@@ -88,6 +88,28 @@ export class MessageUtils {
   }
 
   /**
+   * 週間日記振り返り用のテキスト配列を生成する
+   * @param {Object} diaries - 日記データ
+   * @returns {string[]} テキスト配列
+   */
+  static serializeWeeklyReview(diaries) {
+    if (!Object.keys(diaries).length) {
+      return [
+        '今週は日記がありませんでした 🍃\n来週は書けるといいですね！',
+      ];
+    }
+
+    const serializedDiaries = Object.keys(diaries).sort().map(date => {
+      const icon = IconUtils.getRandomIcon();
+      const heading = `${icon} ${date} の日記 ${icon}`;
+      const text = diaries[date].join('\n\n --- \n\n');
+      return [heading, text];
+    }).flat();
+
+    return ['今週の日記を振り返りましょう！週報です 📅', ...serializedDiaries];
+  }
+
+  /**
    * QuickReplyのアイテムを取得する
    * @returns {Array<Object>}
    * @private

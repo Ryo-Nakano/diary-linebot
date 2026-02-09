@@ -3,16 +3,20 @@
  */
 export class TriggerUtils {
   /**
-   * 指定した関数名で本日23:58に実行されるトリガーを設定する
+   * 指定した関数名でトリガーを設定する
    * @param {string} name - トリガーに設定する関数名
+   * @param {Date} [date] - 指定日時（省略時は本日23:58）
    */
-  static setTrigger(name) {
+  static setTrigger(name, date) {
     if (!name) return;
 
-    const triggerDay = new Date();
-    triggerDay.setHours(23);
-    triggerDay.setMinutes(58);
-    ScriptApp.newTrigger(name).timeBased().at(triggerDay).create();
+    let triggerDate = date;
+    if (!triggerDate) {
+      triggerDate = new Date();
+      triggerDate.setHours(23);
+      triggerDate.setMinutes(58);
+    }
+    ScriptApp.newTrigger(name).timeBased().at(triggerDate).create();
   }
 
   /**
