@@ -25,34 +25,40 @@ export class Diary extends BoundSheetData {
   }
 
   /**
+   * 全日記データを取得する
+   * @returns {Array<{date: string, time: string, diary: string}>}
+   */
+  static get all() {
+    const sheet = this._getSheet(BOUND_SHEETS.DB);
+    if (!sheet) return [];
+
+    // ヘッダー行(2行)を除いた全データを取得
+    const data = sheet.getDataRange().getValues().slice(2);
+
+    return data.map(row => ({
+      date: Utilities.formatDate(row[0], 'JST', 'yyyy/MM/dd'),
+      time: row[1] instanceof Date
+        ? Utilities.formatDate(row[1], 'JST', 'HH:mm')
+        : String(row[1]),
+      diary: row[2],
+    }));
+  }
+
+  /**
    * 指定期間の日記を取得する
    * @param {string} since - 開始日 (yyyy/MM/dd形式)
    * @param {string} until - 終了日 (yyyy/MM/dd形式)
    * @returns {Object} 日付をキーに、日記の配列を値とするオブジェクト
    */
   static getBetween(since, until) {
-    const sheet = this._getSheet(BOUND_SHEETS.DB);
-    if (!sheet) return {};
+    const allData = this.all;
 
-    const data = sheet.getDataRange().getValues().slice(2);
-    const array = [];
+    const filtered = allData.filter(item => item.date >= since && item.date <= until);
 
-    // 末尾から見ていく
-    for (let i = data.length - 1; i >= 0; i--) {
-      const date = Utilities.formatDate(data[i][0], 'JST', 'yyyy/MM/dd');
-      const diary = data[i][2];
-
-      if (date > until) continue;
-      if (date < since) break;
-
-      array.push({ date, diary });
-    }
-
-    return array.reduce((acc, cur) => {
+    return filtered.reduce((acc, cur) => {
       const date = cur.date;
       const diaries = acc[date] || [];
-      const newDiaries = [cur.diary, ...diaries];
-      acc[date] = newDiaries;
+      acc[date] = [cur.diary, ...diaries];
       return acc;
     }, {});
   }
