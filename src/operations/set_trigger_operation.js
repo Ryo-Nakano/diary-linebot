@@ -17,16 +17,6 @@ export class SetTriggerOperation extends BaseOperation {
    * メイン処理
    */
   _operation() {
-    if (this._functionName === 'pushWeekly') {
-      const now = new Date();
-      const nextSunday = new Date(now);
-      const daysUntilNextSunday = (7 - now.getDay()) % 7 || 7; // Next Sunday (if today is Sunday, 7 days later)
-      nextSunday.setDate(now.getDate() + daysUntilNextSunday);
-      nextSunday.setHours(23);
-      nextSunday.setMinutes(58);
-      TriggerUtils.setTrigger(this._functionName, nextSunday);
-    } else {
-      TriggerUtils.setTrigger(this._functionName);
-    }
+    TriggerUtils.setTrigger(this._functionName);
   }
 }
